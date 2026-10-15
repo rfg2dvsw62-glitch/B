@@ -75,9 +75,191 @@ body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); background
 .scroll-content::-webkit-scrollbar { width: 0; }
 .toast { position: fixed; bottom: 160px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 999; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ============ 开场动画 ============ */
+#splashScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 15, 35, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+#splashScreen.fade-out { opacity: 0; pointer-events: none; }
+
+/* 顶部分割线 */
+#splashScreen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #4a9eff, transparent);
+  box-shadow: 0 0 12px #4a9eff, 0 0 24px rgba(74, 158, 255, 0.5);
+}
+
+/* 蝙蝠标志 */
+.splash-bat {
+  width: 180px;
+  height: 90px;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 30px rgba(74, 158, 255, 0.35));
+  animation: batPulse 2.5s ease-in-out infinite;
+}
+@keyframes batPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* 文字容器 */
+.splash-text {
+  margin-top: 24px;
+  text-align: center;
+  position: relative;
+}
+
+/* 主字 */
+.splash-main-text {
+  font-size: 16px;
+  color: #cfe4ff;
+  letter-spacing: 6px;
+  text-shadow: 0 0 12px rgba(74, 158, 255, 0.6), 0 2px 8px rgba(0, 0, 0, 0.8);
+  transform: scaleX(-1);
+  transform-origin: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* 倒影字 */
+.splash-main-text::after {
+  content: '编号宇宙进入中';
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  font-size: 16px;
+  letter-spacing: 6px;
+  color: rgba(207, 228, 255, 0.35);
+  text-shadow: 0 0 8px rgba(74, 158, 255, 0.4);
+  transform: scaleY(-1) scaleX(-1);
+  transform-origin: center;
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
+/* 蝙蝠群容器 */
+#batSwarm {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bat-fly {
+  position: absolute;
+  width: 42px;
+  height: 21px;
+  opacity: 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.9));
+}
+
+/* 蝙蝠从左下往右上飞 */
+@keyframes batFly {
+  0% {
+    opacity: 0;
+    transform: translate(-80px, 80px) rotate(-10deg) scale(0.4);
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(50vw, -20vh) rotate(10deg) scale(1);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(120vw, -100vh) rotate(20deg) scale(1.3);
+  }
+}
+
+/* 频道三已接入 */
+#channelReady {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#channelReady.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+#channelReady .ready-text {
+  font-size: 22px;
+  color: #1a1a1a;
+  font-weight: 600;
+  letter-spacing: 8px;
+  background: rgba(207, 228, 255, 0.95);
+  padding: 16px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(74, 158, 255, 0.4);
+}
 </style>
 </head>
 <body>
+<!-- 开场动画 -->
+<div id="splashScreen">
+  <svg class="splash-bat" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 100 25
+             C 95 20, 88 18, 82 22
+             C 75 15, 65 12, 58 18
+             C 50 10, 38 8, 30 16
+             C 22 8, 10 10, 5 20
+             C 15 22, 25 28, 30 38
+             C 20 40, 12 48, 10 58
+             C 22 52, 35 50, 45 52
+             C 40 60, 42 72, 50 80
+             C 58 72, 62 62, 62 52
+             C 72 55, 82 55, 90 52
+             C 92 62, 96 72, 100 78
+             C 104 72, 108 62, 110 52
+             C 118 55, 128 55, 138 52
+             C 138 62, 142 72, 150 80
+             C 158 72, 160 60, 155 52
+             C 165 50, 178 52, 190 58
+             C 188 48, 180 40, 170 38
+             C 175 28, 185 22, 195 20
+             C 190 10, 178 8, 170 16
+             C 162 8, 150 10, 142 18
+             C 135 12, 125 15, 118 22
+             C 112 18, 105 20, 100 25 Z"
+          fill="#0a0a0a" />
+  </svg>
+  <div class="splash-text">
+    <div class="splash-main-text">频道端口调试中</div>
+  </div>
+</div>
+
+<!-- 蝙蝠群容器（开场时生成，1.5~2.5秒后移除） -->
+<div id="batSwarm"></div>
+
+<!-- 频道三已接入 -->
+<div id="channelReady">
+  <div class="ready-text">频道三已接入</div>
+</div>
 <div class="page-frost"></div>
 <div class="page hidden" id="pageChat" style="z-index:2">
   <div class="topbar">
@@ -612,7 +794,50 @@ function toast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
 }
 
-function init() {
+// ========== 开场动画 ==========
+function playSplash() {
+  const splash = document.getElementById('splashScreen');
+  const swarm = document.getElementById('batSwarm');
+  const ready = document.getElementById('channelReady');
+  if (!splash || !swarm || !ready) return;
+
+  // 生成蝙蝠群（从左下到右上）
+  function spawnBats() {
+    const count = 7;
+    for (let i = 0; i < count; i++) {
+      const bat = document.createElement('div');
+      bat.className = 'bat-fly';
+      const size = 30 + Math.random() * 30;
+      bat.style.width = size + 'px';
+      bat.style.height = (size / 2) + 'px';
+      bat.style.left = (Math.random() * 10 - 10) + 'vw';
+      bat.style.top = (100 + Math.random() * 10) + 'vh';
+      bat.innerHTML = '<svg viewBox="0 0 200 100" style="width:100%;height:100%"><path d="M 100 25 C 95 20, 88 18, 82 22 C 75 15, 65 12, 58 18 C 50 10, 38 8, 30 16 C 22 8, 10 10, 5 20 C 15 22, 25 28, 30 38 C 20 40, 12 48, 10 58 C 22 52, 35 50, 45 52 C 40 60, 42 72, 50 80 C 58 72, 62 62, 62 52 C 72 55, 82 55, 90 52 C 92 62, 96 72, 100 78 C 104 72, 108 62, 110 52 C 118 55, 128 55, 138 52 C 138 62, 142 72, 150 80 C 158 72, 160 60, 155 52 C 165 50, 178 52, 190 58 C 188 48, 180 40, 170 38 C 175 28, 185 22, 195 20 C 190 10, 178 8, 170 16 C 162 8, 150 10, 142 18 C 135 12, 125 15, 118 22 C 112 18, 105 20, 100 25 Z" fill="#0a0a0a"/></svg>';
+      const dur = 1.8 + Math.random() * 1.2;
+      const delay = Math.random() * 0.8;
+      bat.style.animation = 'batFly ' + dur + 's ease-out ' + delay + 's forwards';
+      swarm.appendChild(bat);
+    }
+  }
+
+  // 时间轴
+  setTimeout(spawnBats, 800);  // 800ms 后蝙蝠开始飞
+  setTimeout(function() {
+    splash.classList.add('fade-out');
+  }, 2800);  // 2.8s 后开场画面淡出
+  setTimeout(function() {
+    splash.remove();
+    swarm.remove();
+  }, 3600);  // 3.6s 后移除开场
+  setTimeout(function() {
+    ready.classList.add('show');
+  }, 3800);  // 3.8s 后显示"频道三已接入"
+  setTimeout(function() {
+    ready.classList.remove('show');
+  }, 5200);  // 5.2s 后隐藏
+}
+  function init() {
+  playSplash();  
   loadState();
   applyAppearance();
   bindAppearance();
